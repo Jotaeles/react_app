@@ -13,13 +13,32 @@ class App extends Component {
         this.state = {
             task : task
         }
+
+        this.handleAddTask = this.handleAddTask.bind(this);
+    }
+
+    handleAddTask(tsk){
+        this.setState({
+           task: [...this.state.task, tsk] 
+        })
+    }
+
+    handleRemoveTask(index){
+
+        if(window.confirm('Are you sure you want to delete it?')){
+            this.setState({
+                task : this.state.task.filter((e, i)=>{
+                    return i !== index;
+                })
+            })
+        }
     }
 
 	render() {
 
         const task = this.state.task.map( (tsk, i) => {
             return  (
-                <div className="col-md-4">
+                <div className="col-md-4" key={i}>
                     <div className="card mt-4">
                         <div className="card-header">
                             <h3>{ tsk.title }</h3>
@@ -30,6 +49,9 @@ class App extends Component {
                         <div className="card-body">
                             <p>{ tsk.description }</p>
                             <p>{ tsk.responsible }</p>
+                        </div>
+                        <div className="card-footer">
+                            <button className="btn btn-danger" onClick={this.handleRemoveTask.bind(this, i)}>Delete</button>
                         </div>
                     </div>
                 </div>
@@ -49,7 +71,7 @@ class App extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6 mt-2">
-                            <TaskForm/>
+                            <TaskForm onAddTask = {this.handleAddTask}/>
                         </div>
                     </div>
                 </div>

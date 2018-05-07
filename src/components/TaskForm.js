@@ -9,16 +9,31 @@ class TaskForm extends Component {
             responsible:'',
             description:'',
             priority:'low'
-        }
+        };
+
+        this.handleInput = this.handleInput.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleInput(e){
-        console.log(e.target.value, e.target.name);
+
+        const { value, name} = e.target;
+
+        this.setState({
+            [name]: value
+        })
+    }
+
+    handleSubmit(e){
+        e.preventDefault();
+        console.log(this.state);
+        console.log('sending the data');
+        this.props.onAddTask(this.state);
     }
     render(){
         return(
             <div className="card">
-                <form className="card-body">
+                <form className="card-body" onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <input type="text" className="form-control" name="title" placeholder="Title" onChange={ this.handleInput}/>
                     </div>
@@ -33,6 +48,7 @@ class TaskForm extends Component {
                         <option>Medium</option>
                         <option>High</option>
                     </select>
+                    <button type="submit" className="btn btn-primary mt-2">Save</button>
                 </form>
             </div>
         )
